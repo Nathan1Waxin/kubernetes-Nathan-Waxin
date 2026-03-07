@@ -12,7 +12,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: myservice
+                name: front-end
                 port:
                   number: 80
     - host: myservice-back-end.info
@@ -22,6 +22,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: myservice-back-end
+                name: back-end
                 port:
                   number: 80

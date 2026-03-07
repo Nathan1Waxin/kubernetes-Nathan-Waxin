@@ -16,6 +16,9 @@ spec:
       - name: front-end-container
         image: efrei/front-end:1
         imagePullPolicy: Always
+        env:
+          - name: backEndURL
+            value: "http://back-end/hello"
 ---
 
 apiVersion: apps/v1

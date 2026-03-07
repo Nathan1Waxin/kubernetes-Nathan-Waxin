@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myservice
+  name: myservice-back-end
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myservice
+      app: myservice-back-end
   template:
     metadata:
       labels:
-        app: myservice
+        app: myservice-back-end
     spec:
       containers:
-        - image: efrei/myservice:1
+        - image: efrei/myservice-back-end:1
           imagePullPolicy: IfNotPresent
-          name: myservice
+          name: myservice-back-end
       restartPolicy: Always

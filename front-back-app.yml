@@ -16,11 +16,26 @@ spec:
       - name: front-end-container
         image: efrei/front-end:1
         imagePullPolicy: Always
+        ports:
+          - containerPort: 8080
         env:
           - name: backEndURL
             value: "http://back-end/hello"
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-end
+spec:
+  type: ClusterIP
+  selector:
+    app: front-end
+  ports:
+    - port: 80
+      targetPort: 8080
+---
 
+# === BACK-END ===
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,22 +54,9 @@ spec:
         - name: back-end-container
           image: efrei/back-end:1
           imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
 ---
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: front-end
-spec:
-  type: ClusterIP
-  selector:
-    app: front-end
-  ports:
-    - port: 80
-      targetPort: 8080
-
----
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -65,4 +67,34 @@ spec:
     app: back-end
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 8081
+---
+
+# === INGRESS ===
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: myservice.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80
+    - host: myservice-back-end.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: back-end
+                port:
+                  number: 80

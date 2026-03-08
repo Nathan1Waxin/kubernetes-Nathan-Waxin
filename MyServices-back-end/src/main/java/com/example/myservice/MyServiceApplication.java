@@ -1,4 +1,4 @@
-package com.example.myservice-back-end;
+package com.example.myservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
